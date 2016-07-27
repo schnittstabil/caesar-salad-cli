@@ -1,0 +1,65 @@
+{
+  "name": "caesar-salad-cli",
+  "version": "0.1.0",
+  "description": "Caesar, Vigenere and ROT Ciphers",
+  "license": "MIT",
+  "keywords": [
+    "cli-app",
+    "cli",
+    "Caesar",
+    "Cipher",
+    "Vigenere",
+    "ROT",
+    "ROT13",
+    "ROT18",
+    "ROT47",
+    "ROT5"
+  ],
+  "repository": "schnittstabil/caesar-salad-cli.git",
+  "author": {
+    "name": "Michael Mayer",
+    "email": "michael@schnittstabil.de",
+    "url": "schnittstabil.de"
+  },
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "files": [
+    "commands/*.js",
+    "cli-crypt-action.js",
+    "cli.js",
+    "get-cipher.js"
+  ],
+  "bin": {
+    "caesar-salad": "cli.js"
+  },
+  "nyc": {
+    "include": [
+      "commands/*.js",
+      "cli-crypt-action.js",
+      "cli.js",
+      "get-cipher.js"
+    ]
+  },
+  "scripts": {
+    "clean": "rimraf .nyc_output/ coverage/",
+    "test": "xo && ava",
+    "test-cover": "xo && nyc --all ava",
+    "test-cover-html": "npm run test-cover && nyc report --reporter=html"
+  },
+  "dependencies": {
+    "caesar-salad": "^0.1.7",
+    "meow": "^3.7.0",
+    "update-notifier": "^1.0.2"
+  },
+  "devDependencies": {
+    "ava": "^0.15.2",
+    "coveralls": "^2.11.11",
+    "execa": "^0.4.0",
+    "nyc": "^7.1.0",
+    "pify": "^2.3.0",
+    "rimraf": "^2.5.4",
+    "tempfile": "^1.1.1",
+    "xo": "^0.16.0"
+  }
+}
