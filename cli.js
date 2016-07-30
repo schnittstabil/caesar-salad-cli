@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 'use strict';
-var updateNotifier = require('update-notifier');
-var meow = require('meow');
+const meow = require('meow');
+const updateNotifier = require('update-notifier');
 
-var cli = meow([
+const pkg = require('./package.json');
+
+updateNotifier({pkg}).notify();
+
+const cli = meow([
 	'Usage: caesar-salad [options] [command]',
 	'',
 	'Commands',
@@ -44,10 +48,8 @@ var cli = meow([
 	}
 });
 
-process.on('exit', () => updateNotifier({pkg: cli.pkg}).notify());
-
-var command = cli.input.shift();
-var commandNames = {
+const command = cli.input.shift();
+const commandNames = {
 	encrypt: 'encrypt',
 	enc: 'encrypt',
 	decrypt: 'decrypt',
@@ -58,7 +60,7 @@ var commandNames = {
 if (!command) {
 	cli.showHelp(1);
 } else if (commandNames[command]) {
-	var cliCommand = require('./commands/' + commandNames[command]);
+	const cliCommand = require('./commands/' + commandNames[command]);
 
 	cliCommand(cli, function (exitCode) {
 		process.exit(exitCode);

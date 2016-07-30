@@ -1,13 +1,13 @@
 'use strict';
-var stream = require('stream');
-var fs = require('fs');
-var os = require('os');
+const stream = require('stream');
+const fs = require('fs');
+const os = require('os');
 
 function cliCryptAction(Cipher, text, opts, done) {
-	var input = opts.input ? fs.createReadStream(opts.input, {encoding: 'utf8'}) : process.stdin;
-	var output = opts.output ? fs.createWriteStream(opts.output, {encoding: 'utf8'}) : process.stdout;
-	var cipher = new Cipher(opts.password);
-	var cipherStream = new stream.Transform();
+	const input = opts.input ? fs.createReadStream(opts.input, {encoding: 'utf8'}) : process.stdin;
+	const output = opts.output ? fs.createWriteStream(opts.output, {encoding: 'utf8'}) : process.stdout;
+	const cipher = new Cipher(opts.password);
+	const cipherStream = new stream.Transform();
 
 	if (Array.isArray(text)) {
 		text = text.join(' ');
