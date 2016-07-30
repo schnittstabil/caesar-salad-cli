@@ -1,6 +1,6 @@
 {
   "name": "caesar-salad-cli",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Caesar, Vigenere and ROT Ciphers",
   "license": "MIT",
   "keywords": [

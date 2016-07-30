@@ -44,7 +44,7 @@ var cli = meow([
 	}
 });
 
-updateNotifier({pkg: cli.pkg}).notify();
+process.on('exit', () => updateNotifier({pkg: cli.pkg}).notify());
 
 var command = cli.input.shift();
 var commandNames = {
