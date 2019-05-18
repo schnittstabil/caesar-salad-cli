@@ -3,7 +3,7 @@ const stream = require('stream');
 const fs = require('fs');
 const os = require('os');
 
-function cliCryptAction(Cipher, text, opts, done) {
+const cliCryptAction = (Cipher, text, opts, done) => {
 	const input = opts.input ? fs.createReadStream(opts.input, {encoding: 'utf8'}) : process.stdin;
 	const output = opts.output ? fs.createWriteStream(opts.output, {encoding: 'utf8'}) : process.stdout;
 	const cipher = new Cipher(opts.password);
@@ -18,11 +18,11 @@ function cliCryptAction(Cipher, text, opts, done) {
 		cb();
 	};
 
-	cipherStream.on('end', function () {
+	cipherStream.on('end', () => {
 		done(0);
 	});
 
-	cipherStream.on('error', function () {
+	cipherStream.on('error', () => {
 		done(1);
 	});
 
@@ -31,17 +31,17 @@ function cliCryptAction(Cipher, text, opts, done) {
 			cipherStream.end(text + os.EOL);
 		}
 	} else {
-		input.on('end', function () {
+		input.on('end', () => {
 			cipherStream.end(text);
 		});
 		input.pipe(cipherStream, {end: false});
 
-		if (input.end) {
+		if (typeof input.end === 'function') {
 			input.end();
 		}
 	}
 
 	cipherStream.pipe(output);
-}
+};
 
 module.exports = cliCryptAction;

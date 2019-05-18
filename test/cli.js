@@ -9,16 +9,16 @@ import execCli from './helpers/exec-cli';
 
 const fsP = pify(fs);
 
-const cryptTest = (t, task) => {
+const cryptTest = async (t, task) => {
 	t.plan(2);
 
-	return Promise.all([
+	const [result, expected] = await Promise.all([
 		execCli(task),
 		fsP.readFile(task.expected)
-	]).then(([result, expected]) => {
-		t.truthy(result.output);
-		t.is(result.output.toString(), expected.toString());
-	});
+	]);
+
+	t.truthy(result.output);
+	t.is(result.output.toString(), expected.toString());
 };
 
 [
@@ -67,73 +67,62 @@ const cryptTest = (t, task) => {
 		expected: '/fixtures/0..127.dat.vigenere.abc'
 	}
 ].map(
-	task => Object.assign({}, task, {
+	task => ({
+		...task,
 		input: path.join(__dirname, task.input),
 		expected: path.join(__dirname, task.expected)
 	})
-).forEach(function (task) {
-	test(task.title + ' should be encrypted correctly', cryptTest, Object.assign({}, task, {
+).forEach(task => {
+	test(task.title + ' should be encrypted correctly', cryptTest, {
+		...task,
 		command: 'enc'
-	}));
-	test(task.title + ' should be decrypted correctly', cryptTest, Object.assign({}, task, {
+	});
+
+	test(task.title + ' should be decrypted correctly', cryptTest, {
+		...task,
 		command: 'dec',
 		input: task.expected,
 		expected: task.input
-	}));
-});
-
-test('show help on missing command', t => {
-	t.plan(2);
-
-	return execCli().catch(err => {
-		var output = err.stdout + err.stderr;
-
-		t.is(err.code, 1);
-		t.regex(output, /usage/i);
 	});
 });
 
-test('show help on unknown command', t => {
-	t.plan(3);
+test('show help on missing command', async t => {
+	const err = await t.throwsAsync(execCli);
+	const output = err.stdout + err.stderr;
 
-	return execCli({command: 'UNKNWON_CMD'}).catch(err => {
-		var output = err.stdout + err.stderr;
-
-		t.is(err.code, 1);
-		t.regex(output, /usage/i);
-		t.regex(output, /UNKNWON_CMD/i);
-	});
+	t.is(err.code, 1);
+	t.regex(output, /usage/i);
 });
 
-test('error on encrypt with unknown cipher', t => {
-	t.plan(2);
+test('show help on unknown command', async t => {
+	const err = await t.throwsAsync(() => execCli({command: 'UNKNWON_CMD'}));
+	const output = err.stdout + err.stderr;
 
-	return execCli({command: 'enc', cipher: 'UNKNWON_CIPHER'}).catch(err => {
-		var output = err.stdout + err.stderr;
-
-		t.is(err.code, 1);
-		t.regex(output, /UNKNWON_CIPHER/i);
-	});
+	t.is(err.code, 1);
+	t.regex(output, /usage/i);
+	t.regex(output, /UNKNWON_CMD/i);
 });
 
-test('error on decrypt with unknown cipher', t => {
-	t.plan(2);
+test('error on encrypt with unknown cipher', async t => {
+	const err = await t.throwsAsync(() => execCli({command: 'enc', cipher: 'UNKNWON_CIPHER'}));
+	const output = err.stdout + err.stderr;
 
-	return execCli({command: 'dec', cipher: 'UNKNWON_CIPHER'}).catch(err => {
-		var output = err.stdout + err.stderr;
-
-		t.is(err.code, 1);
-		t.regex(output, /UNKNWON_CIPHER/i);
-	});
+	t.is(err.code, 1);
+	t.regex(output, /UNKNWON_CIPHER/i);
 });
 
-test('list ciphers', t => {
-	t.plan(1);
+test('error on decrypt with unknown cipher', async t => {
+	const err = await t.throwsAsync(() => execCli({command: 'dec', cipher: 'UNKNWON_CIPHER'}));
+	const output = err.stdout + err.stderr;
 
-	return execCli({command: 'list'}).then(result => {
-		var expected = [].concat(caesarSalad.ciphers).map(c => c.toLowerCase()).sort();
-		var parsed = result.stdout.trim().split(/\s/g).map(c => c.toLowerCase()).sort();
+	t.is(err.code, 1);
+	t.regex(output, /UNKNWON_CIPHER/i);
+});
 
-		t.deepEqual(parsed, expected);
-	});
+test('list ciphers', async t => {
+	const result = await execCli({command: 'list'});
+	const expected = [].concat(caesarSalad.ciphers).map(c => c.toLowerCase()).sort();
+	const parsed = result.stdout.trim().split(/\s/g).map(c => c.toLowerCase()).sort();
+
+	t.deepEqual(parsed, expected);
 });

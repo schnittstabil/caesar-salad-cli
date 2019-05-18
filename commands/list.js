@@ -1,12 +1,12 @@
 'use strict';
-var caesarSalad = require('caesar-salad');
+const caesarSalad = require('caesar-salad');
 
-function list(cli, cb) {
-	caesarSalad.ciphers.forEach(function (name) {
+const list = (cli, cb) => {
+	caesarSalad.ciphers.forEach(name => {
 		console.log(name);
 	});
 
 	return cb(0);
-}
+};
 
 module.exports = list;

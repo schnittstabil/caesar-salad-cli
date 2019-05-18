@@ -1,16 +1,16 @@
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var pify = require('pify');
-var execa = require('execa');
-var tempfile = require('tempfile');
+const pify = require('pify');
+const execa = require('execa');
+const tempfile = require('tempfile');
 
-var fsP = pify(fs);
+const fsP = pify(fs);
 
-function execCli(task) {
-	var args = [path.join(__dirname, '../../cli.js')];
+const execCli = async task => {
+	const args = [path.join(__dirname, '../../cli.js')];
 
-	task = Object.assign({}, task);
+	task = {...task};
 
 	if (task.output === true) {
 		task.output = tempfile('.dat');
@@ -40,23 +40,14 @@ function execCli(task) {
 		args.push(task.command);
 	}
 
-	var child = execa(process.argv[0], args, {stripEof: false}).then(function (result) {
-		result.args = args;
-
-		return result;
-	});
+	const result = await execa(process.argv[0], args, {stripEof: false});
+	result.args = args;
 
 	if (task.output) {
-		child = child.then(function (result) {
-			return fsP.readFile(task.output).then(function (output) {
-				result.output = output;
-
-				return result;
-			});
-		});
+		result.output = await fsP.readFile(task.output);
 	}
 
-	return child;
-}
+	return result;
+};
 
 module.exports = execCli;
