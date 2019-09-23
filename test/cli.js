@@ -5,7 +5,7 @@ import caesarSalad from 'caesar-salad';
 import test from 'ava';
 import pify from 'pify';
 
-import execCli from './helpers/exec-cli';
+import execCli from './helpers/_exec-cli';
 
 const fsP = pify(fs);
 
@@ -90,7 +90,7 @@ test('show help on missing command', async t => {
 	const err = await t.throwsAsync(execCli);
 	const output = err.stdout + err.stderr;
 
-	t.is(err.code, 1);
+	t.is(err.exitCode, 1);
 	t.regex(output, /usage/i);
 });
 
@@ -98,7 +98,7 @@ test('show help on unknown command', async t => {
 	const err = await t.throwsAsync(() => execCli({command: 'UNKNWON_CMD'}));
 	const output = err.stdout + err.stderr;
 
-	t.is(err.code, 1);
+	t.is(err.exitCode, 1);
 	t.regex(output, /usage/i);
 	t.regex(output, /UNKNWON_CMD/i);
 });
@@ -107,7 +107,7 @@ test('error on encrypt with unknown cipher', async t => {
 	const err = await t.throwsAsync(() => execCli({command: 'enc', cipher: 'UNKNWON_CIPHER'}));
 	const output = err.stdout + err.stderr;
 
-	t.is(err.code, 1);
+	t.is(err.exitCode, 1);
 	t.regex(output, /UNKNWON_CIPHER/i);
 });
 
@@ -115,7 +115,7 @@ test('error on decrypt with unknown cipher', async t => {
 	const err = await t.throwsAsync(() => execCli({command: 'dec', cipher: 'UNKNWON_CIPHER'}));
 	const output = err.stdout + err.stderr;
 
-	t.is(err.code, 1);
+	t.is(err.exitCode, 1);
 	t.regex(output, /UNKNWON_CIPHER/i);
 });
 

@@ -1,6 +1,6 @@
 {
   "name": "caesar-salad-cli",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Caesar, Vigenere and ROT Ciphers",
   "license": "MIT",
   "keywords": [
@@ -47,16 +47,17 @@
     "test-cover": "xo && nyc --all ava",
     "test-cover-html": "npm run test-cover && nyc report --reporter=html"
   },
-  "dependencies": {},
+  "dependencies": {
+    "caesar-salad": "^2.0.1"
+  },
   "devDependencies": {
-    "ava": "^1.4.1",
-    "caesar-salad": "^2.0.1",
+    "ava": "^2.4.0",
     "coveralls": "^3.0.3",
-    "execa": "^1.0.0",
+    "execa": "^2.0.4",
     "meow": "^5.0.0",
     "nyc": "^14.1.1",
     "pify": "^4.0.1",
-    "rimraf": "^2.5.4",
+    "rimraf": "^3.0.0",
     "tempfile": "^3.0.0",
     "update-notifier": "^3.0.0",
     "xo": "^0.24.0"

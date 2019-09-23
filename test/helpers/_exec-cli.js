@@ -7,7 +7,7 @@ const tempfile = require('tempfile');
 
 const fsP = pify(fs);
 
-const execCli = async task => {
+const _execCli = async task => {
 	const args = [path.join(__dirname, '../../cli.js')];
 
 	task = {...task};
@@ -50,4 +50,4 @@ const execCli = async task => {
 	return result;
 };
 
-module.exports = execCli;
+module.exports = _execCli;
