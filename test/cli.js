@@ -1,11 +1,11 @@
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
-import caesarSalad from 'caesar-salad';
-import test from 'ava';
-import pify from 'pify';
+const caesarSalad = require('caesar-salad');
+const test = require('ava');
+const pify = require('pify');
 
-import execCli from './helpers/_exec-cli';
+const execCli = require('./helpers/_exec-cli');
 
 const fsP = pify(fs);
 

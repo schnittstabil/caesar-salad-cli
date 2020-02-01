@@ -1,13 +1,18 @@
 language: node_js
 matrix:
   include:
-    - node_js: "12"
-    - node_js: "10"
-    - node_js: "8"
-      env: COVER=yes
+  - node_js: "12"
+  - node_js: "10"
+    env: COVER=true
 before_install:
-  - 'npm install -g npm@latest'
+- 'npm install -g npm@latest'
 script:
-  - 'if [ -n "$COVER" ]; then npm run test-cover; else npm test; fi'
+- if [ "$COVER" = true ]; then
+    npm run test-cover;
+  else
+    npm test;
+  fi
 after_success:
-  - 'if [ -n "$COVER" ]; then ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls; fi'
+- if [ "$COVER" = true ]; then
+    ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls;
+  fi

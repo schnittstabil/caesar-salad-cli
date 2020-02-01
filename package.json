@@ -1,6 +1,6 @@
 {
   "name": "caesar-salad-cli",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "Caesar, Vigenere and ROT Ciphers",
   "license": "MIT",
   "keywords": [
@@ -22,7 +22,7 @@
     "url": "schnittstabil.de"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "files": [
     "commands/*.js",
@@ -49,17 +49,17 @@
   },
   "dependencies": {
     "caesar-salad": "^2.0.1",
-    "meow": "^5.0.0",
+    "meow": "^6.0.0",
     "update-notifier": "^4.0.0"
   },
   "devDependencies": {
-    "ava": "^2.4.0",
+    "ava": "^3.1.0",
     "coveralls": "^3.0.3",
-    "execa": "^2.0.4",
-    "nyc": "^14.1.1",
+    "execa": "^4.0.0",
+    "nyc": "^15.0.0",
     "pify": "^4.0.1",
     "rimraf": "^3.0.0",
     "tempfile": "^3.0.0",
-    "xo": "^0.24.0"
+    "xo": "^0.25.3"
   }
 }
