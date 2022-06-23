@@ -50,7 +50,7 @@
   "dependencies": {
     "caesar-salad": "^2.0.1",
     "meow": "^6.0.0",
-    "update-notifier": "^4.0.0"
+    "update-notifier": "^6.0.0"
   },
   "devDependencies": {
     "ava": "^3.1.0",
